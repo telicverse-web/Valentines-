@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Valentine?</title>
   
-   <style>
+   <<style>
   * {
     box-sizing: border-box;
   }
@@ -23,73 +23,140 @@
     justify-content: center;
     text-align: center;
 
-    /* Rose gold gradient */
-    background: linear-gradient(135deg, #f7c6cc, #e6a6b3);
-
+    background: linear-gradient(135deg, #f6c1cc, #e8a1b0);
     position: relative;
     overflow: hidden;
   }
 
-  /* Lily background layer */
+  /* Stargazer lily outline vibe */
   body::before {
-    content: "🌸 ✨ 🌸 ✨ 🌸";
+    content: "🌸 ✨ 🌸 ✨ 🌸 ✨ 🌸";
     position: absolute;
-    font-size: 80px;
-    opacity: 0.08;
+    font-size: 100px;
+    opacity: 0.06;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) rotate(-15deg);
+    transform: translate(-50%, -50%) rotate(-12deg);
     white-space: nowrap;
     pointer-events: none;
   }
 
   .card {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 35px 25px;
-    border-radius: 18px;
-    max-width: 90%;
-    width: 380px;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 45px 30px;
+    border-radius: 22px;
+    max-width: 92%;
+    width: 420px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.18);
     position: relative;
     z-index: 2;
   }
 
   h1 {
-    color: #b23a48;
-    margin-bottom: 10px;
-    font-size: 26px;
+    font-size: 34px;
+    color: #a8324a;
+    margin-bottom: 15px;
   }
 
   .heart {
-    font-size: 40px;
-    margin: 15px 0;
+    font-size: 52px;
+    margin: 20px 0;
   }
 
   p {
-    font-size: 20px;
+    font-size: 26px;
     color: #333;
-    margin: 15px 0;
+    margin: 20px 0;
   }
 
-  .yes {
-    font-size: 22px;
+  .yes-btn {
+    margin-top: 30px;
+    padding: 18px 40px;
+    font-size: 26px;
     font-weight: bold;
-    color: #b23a48;
-    margin-top: 20px;
+    color: white;
+    background: #c73b5a;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
   }
-</style> 
-</head>
-<body>
 
-  <div class="card">
+  .yes-btn:active {
+    transform: scale(0.96);
+  }
+
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+  }
+</style>
+
+</body>
+     <canvas id="confetti"></canvas>
+
+<div class="card">
   <h1>Hey Ntando</h1>
 
   <div class="heart">❤️</div>
 
   <p><strong>Will you be my Valentine?</strong></p>
 
-  <div class="yes">Yes or Yes</div>
-  </div>
+  <button class="yes-btn" onclick="launchConfetti()">YES 💕</button>
+</div>
+    <script>
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
 
-</body>
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const confettiPieces = [];
+
+  function launchConfetti() {
+    for (let i = 0; i < 150; i++) {
+      confettiPieces.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 6 + 4,
+        d: Math.random() * 30 + 10,
+        color: ["#ff4d6d", "#f7c6cc", "#ffffff"][Math.floor(Math.random() * 3)],
+        tilt: Math.random() * 10 - 10,
+        tiltAngle: 0,
+        tiltAngleIncrement: Math.random() * 0.07 + 0.05
+      });
+    }
+    requestAnimationFrame(drawConfetti);
+  }
+
+  function drawConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    confettiPieces.forEach((p, i) => {
+      ctx.beginPath();
+      ctx.fillStyle = p.color;
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      p.y += Math.cos(p.d) + 4;
+      p.x += Math.sin(p.tiltAngle);
+      p.tiltAngle += p.tiltAngleIncrement;
+
+      if (p.y > canvas.height) {
+        confettiPieces.splice(i, 1);
+      }
+    });
+
+    if (confettiPieces.length > 0) {
+      requestAnimationFrame(drawConfetti);
+    }
+  }
+
+  window.onresize = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  };
+</script> 
 </html>
