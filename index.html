@@ -13,7 +13,6 @@
     width: 100%;
     height: 100%;
     margin: 0;
-    padding: 0;
   }
 
   body {
@@ -22,74 +21,76 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-
-    background: linear-gradient(135deg, #f6c1cc, #e8a1b0);
-    position: relative;
     overflow: hidden;
+
+    background: linear-gradient(135deg, #f6c1cc, #e6a0b4);
   }
 
-  /* Stargazer lily outline vibe */
+  /* Stargazer lily outlines across screen */
   body::before {
-    content: "🌸 ✨ 🌸 ✨ 🌸 ✨ 🌸";
+    content: "🌸 ✨ 🌸 ✨ 🌸 ✨ 🌸 ✨ 🌸 ✨ 🌸";
     position: absolute;
-    font-size: 100px;
-    opacity: 0.06;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-12deg);
-    white-space: nowrap;
+    inset: 0;
+    font-size: 90px;
+    opacity: 0.05;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-around;
+    justify-content: space-around;
     pointer-events: none;
   }
 
   .card {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 45px 30px;
-    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.88);
+    padding: 50px 35px;
+    border-radius: 26px;
     max-width: 92%;
     width: 420px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.18);
-    position: relative;
+    box-shadow: 0 25px 45px rgba(0,0,0,0.2);
     z-index: 2;
   }
 
   h1 {
-    font-size: 34px;
+    font-size: 36px;
     color: #a8324a;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
 
-  .heart {
-    font-size: 52px;
+  /* Pixel-style 3D heart */
+  .pixel-heart {
+    font-size: 64px;
+    text-shadow:
+      2px 2px 0 #a3001b,
+      4px 4px 0 #6d0012;
     margin: 20px 0;
   }
 
   p {
-    font-size: 26px;
+    font-size: 28px;
     color: #333;
-    margin: 20px 0;
+    margin: 25px 0;
   }
 
   .yes-btn {
-    margin-top: 30px;
-    padding: 18px 40px;
-    font-size: 26px;
+    margin-top: 35px;
+    padding: 22px 52px;
+    font-size: 30px;
     font-weight: bold;
     color: white;
-    background: #c73b5a;
+    background: #c92b4a;
     border: none;
-    border-radius: 40px;
+    border-radius: 45px;
     cursor: pointer;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.25);
   }
 
   .yes-btn:active {
-    transform: scale(0.96);
+    transform: scale(0.95);
   }
 
   canvas {
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
     pointer-events: none;
   }
 </style>
@@ -97,44 +98,50 @@
 </body>
      <canvas id="confetti"></canvas>
 
+<audio id="cheer" src="https://www.soundjay.com/human/applause-8.mp3"></audio>
+
 <div class="card">
   <h1>Hey Ntando</h1>
 
-  <div class="heart">❤️</div>
+  <div class="pixel-heart">❤️</div>
 
   <p><strong>Will you be my Valentine?</strong></p>
 
-  <button class="yes-btn" onclick="launchConfetti()">YES 💕</button>
+  <button class="yes-btn" onclick="celebrate()">YES 💕</button>
 </div>
-    <script>
+  };
+<script>
   const canvas = document.getElementById("confetti");
   const ctx = canvas.getContext("2d");
+  const cheer = document.getElementById("cheer");
 
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  const confettiPieces = [];
+  const confetti = [];
 
-  function launchConfetti() {
-    for (let i = 0; i < 150; i++) {
-      confettiPieces.push({
+  function celebrate() {
+    cheer.play();
+
+    for (let i = 0; i < 180; i++) {
+      confetti.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height - canvas.height,
         r: Math.random() * 6 + 4,
-        d: Math.random() * 30 + 10,
-        color: ["#ff4d6d", "#f7c6cc", "#ffffff"][Math.floor(Math.random() * 3)],
-        tilt: Math.random() * 10 - 10,
+        d: Math.random() * 25 + 10,
+        color: ["#ff4d6d", "#f7c6cc", "#ffffff", "#d4af37"][Math.floor(Math.random() * 4)],
+        tilt: Math.random() * 10,
         tiltAngle: 0,
         tiltAngleIncrement: Math.random() * 0.07 + 0.05
       });
     }
-    requestAnimationFrame(drawConfetti);
+    requestAnimationFrame(draw);
   }
 
-  function drawConfetti() {
+  function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    confettiPieces.forEach((p, i) => {
+    confetti.forEach((p, i) => {
       ctx.beginPath();
       ctx.fillStyle = p.color;
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
@@ -144,19 +151,15 @@
       p.x += Math.sin(p.tiltAngle);
       p.tiltAngle += p.tiltAngleIncrement;
 
-      if (p.y > canvas.height) {
-        confettiPieces.splice(i, 1);
-      }
+      if (p.y > canvas.height) confetti.splice(i, 1);
     });
 
-    if (confettiPieces.length > 0) {
-      requestAnimationFrame(drawConfetti);
-    }
+    if (confetti.length) requestAnimationFrame(draw);
   }
 
   window.onresize = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
   };
-</script> 
+</script>
 </html>
