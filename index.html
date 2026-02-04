@@ -3,37 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <title>Valentine?</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #fff5f7;
-      text-align: center;
-      padding: 40px;
-    }
-    h1 {
-      color: #d6336c;
-    }
-    p {
-      font-size: 18px;
-      color: #333;
-    }
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      max-width: 400px;
-      margin: auto;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-  </style>
+  
+   <style>
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    /* Rose gold gradient */
+    background: linear-gradient(135deg, #f7c6cc, #e6a6b3);
+
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Lily background layer */
+  body::before {
+    content: "🌸 ✨ 🌸 ✨ 🌸";
+    position: absolute;
+    font-size: 80px;
+    opacity: 0.08;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 35px 25px;
+    border-radius: 18px;
+    max-width: 90%;
+    width: 380px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 2;
+  }
+
+  h1 {
+    color: #b23a48;
+    margin-bottom: 10px;
+    font-size: 26px;
+  }
+
+  .heart {
+    font-size: 40px;
+    margin: 15px 0;
+  }
+
+  p {
+    font-size: 20px;
+    color: #333;
+    margin: 15px 0;
+  }
+
+  .yes {
+    font-size: 22px;
+    font-weight: bold;
+    color: #b23a48;
+    margin-top: 20px;
+  }
+</style> 
 </head>
 <body>
 
   <div class="card">
-    <h1>Hey Ntando 🌸</h1>
-    <p>I’ve been thinking about Valentine’s Day.</p>
-    <p>I already have something planned for us.</p>
-    <p><strong>Will you be my Valentine?</strong></p>
+  <h1>Hey Ntando</h1>
+
+  <div class="heart">❤️</div>
+
+  <p><strong>Will you be my Valentine?</strong></p>
+
+  <div class="yes">Yes or Yes</div>
   </div>
 
 </body>
